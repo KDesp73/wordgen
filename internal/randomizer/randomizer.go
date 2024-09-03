@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const vowels = "aeiouy"
+const vowels = "aeiou"
 const consonants = "qwrtpsfghjdklzxcvbnmy"
 
 func randVow() string {
