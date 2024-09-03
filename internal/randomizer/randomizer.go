@@ -17,7 +17,7 @@ func randCon() string {
 }
 
 func RandSyllable() string {
-	switch rand.Intn(6) { // Increased to 6 for more variety
+	switch rand.Intn(5) {
 	case 0:
 		return randCon() + randVow()
 	case 1:
@@ -27,8 +27,6 @@ func RandSyllable() string {
 	case 3:
 		return randCon() + randVow() + randCon()
 	case 4:
-		return randCon() + randVow() + randCon()
-	case 5:
 		return randVow() + randCon() + randVow()
 	}
 	return ""

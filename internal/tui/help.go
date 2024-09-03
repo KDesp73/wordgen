@@ -40,8 +40,8 @@ var keys = keyMap{
 		key.WithHelp("shift+tab", "prev page"),
 	),
 	New: key.NewBinding(
-		key.WithKeys("n"),
-		key.WithHelp("n", "New random words"),
+		key.WithKeys("r"),
+		key.WithHelp("r", "Refresh random words"),
 	),
 	Save: key.NewBinding(
 		key.WithKeys("s"),

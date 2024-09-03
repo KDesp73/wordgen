@@ -8,7 +8,6 @@ import (
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -20,7 +19,6 @@ type model struct {
 	saveFile string
 	keys keyMap
 	help help.Model
-	table table.Model
 	selected int
 	page int
 	pages []string
@@ -58,7 +56,7 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var (
-		cmd tea.Cmd
+		// cmd tea.Cmd
 		cmds []tea.Cmd
 	)
 
@@ -69,11 +67,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, m.keys.NextPage):
-			m.table.Focus()
 			m.selected = 0
 			m.page = eumod(m.page+1, len(m.pages))
 		case key.Matches(msg, m.keys.PrevPage):
-			m.table.Focus()
 			m.selected = 0
 			m.page = eumod(m.page-1, len(m.pages))
 		case key.Matches(msg, m.keys.Up):
@@ -95,8 +91,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.delete()
 		}
 	}
-	m.table, cmd = m.table.Update(msg)
-	cmds = append(cmds, cmd)
 	
 	return m, tea.Batch(cmds...)
 }

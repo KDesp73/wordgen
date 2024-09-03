@@ -24,11 +24,7 @@ func (m *model) down() {
 	} 
 }
 
-func (m *model) enter() {
-	if len(m.pages) == 2{
-		m.pages = append(m.pages, "Modified")
-	}
-	
+func getWord(m model) string {
 	var word string
 	switch m.page {
 	case RANDOM:
@@ -39,6 +35,16 @@ func (m *model) enter() {
 		word = m.modifiedWords[m.selected]
 	}
 
+	return word
+}
+
+func (m *model) enter() {
+	if len(m.pages) == 2{
+		m.pages = append(m.pages, "Modified")
+	}
+	
+	word := getWord(*m)
+
 	m.modifiedWords = []string{}
 	m.modifiedWords = append(m.modifiedWords, word)
 	m.modifiedWords = append(m.modifiedWords, randomizer.GetModifiedWords(word, 10)...)
@@ -47,9 +53,17 @@ func (m *model) enter() {
 }
 
 func (m *model) save() {
-	word := m.table.SelectedRow()[0]
+	word := getWord(*m)
+
+	if contains(m.savedWords, word) {
+		return
+	}
 
 	m.savedWords = append(m.savedWords, word)
+
+	if m.page == SAVED {
+		m.selected = len(m.savedWords) - 1
+	}
 }
 
 func (m *model) delete() {
