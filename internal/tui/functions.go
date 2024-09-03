@@ -1,6 +1,6 @@
 package tui
 
-import "randomname/internal/randomizer"
+import "wordgen/internal/randomizer"
 
 func (m *model) up() {
 	switch m.page {

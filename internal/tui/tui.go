@@ -3,7 +3,7 @@ package tui
 import (
 	"fmt"
 	"os"
-	"randomname/internal/randomizer"
+	"wordgen/internal/randomizer"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/help"

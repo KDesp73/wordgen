@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"randomname/internal/randomizer"
+	"wordgen/internal/randomizer"
 )
 
 var words = []string{

@@ -1,4 +1,4 @@
-module randomname
+module wordgen
 
 go 1.23.0
 

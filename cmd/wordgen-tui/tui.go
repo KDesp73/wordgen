@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"randomname/internal/tui"
+	"wordgen/internal/tui"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
