@@ -109,7 +109,7 @@ func (m model) View() string {
 
 	b.WriteString(page(m))
 
-	b.WriteString("\n\n" + m.help.View(m.keys))
+	b.WriteString("\n\n" + leftPaddingStyle(2)(m.help.View(m.keys)))
 
 	return lipgloss.Place(
 		m.width,
