@@ -8,6 +8,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
+	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -19,11 +20,13 @@ type model struct {
 	saveFile string
 	keys keyMap
 	help help.Model
+	table table.Model
+	selected int
 	page int
 	pages []string
-	selected int
 	words []string
 	savedWords []string
+	modifiedWords []string
 }
 
 func NewModel() model {
@@ -43,8 +46,7 @@ func NewModel() model {
 		saveFile: saveFile,
 		help: help.New(),
 		keys: keys,
-		selected: 0,
-		words: randomizer.FetchWords(10),
+		words: randomizer.GetWords(10),
 	}
 
 	return m
@@ -56,6 +58,7 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var (
+		cmd tea.Cmd
 		cmds []tea.Cmd
 	)
 
@@ -66,40 +69,34 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, m.keys.NextPage):
+			m.table.Focus()
 			m.selected = 0
 			m.page = eumod(m.page+1, len(m.pages))
 		case key.Matches(msg, m.keys.PrevPage):
+			m.table.Focus()
 			m.selected = 0
 			m.page = eumod(m.page-1, len(m.pages))
 		case key.Matches(msg, m.keys.Up):
-			switch m.page {
-			case SAVED:
-				m.selected = eumod(m.selected-1, len(m.savedWords))
-			case RANDOM:
-				m.selected = eumod(m.selected-1, len(m.words))
-			} 
+			m.up()
 		case key.Matches(msg, m.keys.Down):
-			switch m.page {
-			case SAVED:
-				m.selected = eumod(m.selected+1, len(m.savedWords))
-			case RANDOM:
-				m.selected = eumod(m.selected+1, len(m.words))
-			} 
+			m.down()
 		case key.Matches(msg, m.keys.Help):
 			m.help.ShowAll = !m.help.ShowAll
 		case key.Matches(msg, m.keys.Quit):
 			saveToFile(m.saveFile, m.savedWords)
 			return m, tea.Quit
 		case key.Matches(msg, m.keys.New):
-			m.words = randomizer.FetchWords(10)
+			m.words = randomizer.GetWords(10)
 		case key.Matches(msg, m.keys.Save):
-			if m.page == SAVED {
-				break
-			}
-			m.savedWords = append(m.savedWords, m.words[m.selected])
+			m.save()
 		case key.Matches(msg, m.keys.Enter):
+			m.enter()
+		case key.Matches(msg, m.keys.Delete):
+			m.delete()
 		}
 	}
+	m.table, cmd = m.table.Update(msg)
+	cmds = append(cmds, cmd)
 	
 	return m, tea.Batch(cmds...)
 }
@@ -125,6 +122,6 @@ func (m model) View() string {
 		m.height,
 		lipgloss.Left,
 		lipgloss.Top,
-		lipgloss.NewStyle().Padding(2).Render(b.String()),
+		lipgloss.NewStyle().PaddingLeft(3).PaddingTop(1).Render(b.String()),
 	)
 }

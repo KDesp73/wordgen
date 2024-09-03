@@ -9,13 +9,14 @@ import (
 const (
 	RANDOM = 0
 	SAVED = 1
+	MODIFIED = 2
 )
 
-func _random(m model) string {
+func wordsList(selected int, list []string) string {
 	var b strings.Builder
 
-	for i, word := range m.words {
-		if i == m.selected {
+	for i, word := range list {
+		if i == selected {
 			b.WriteString(selectedItemStyle(word) + "\n")
 		} else {
 			b.WriteString(" " + word + "\n")
@@ -25,18 +26,16 @@ func _random(m model) string {
 	return b.String()
 }
 
-func _saved(m model) string {
-	var b strings.Builder
+func _random(m model) string {
+	return wordsList(m.selected, m.words)
+}
 
-	for i, word := range m.savedWords {
-		if i == m.selected {
-			b.WriteString(selectedItemStyle(word) + "\n")
-		} else {
-			b.WriteString(" " + word + "\n")
-		}
-	}
-	
-	return b.String()
+func _saved(m model) string {
+	return wordsList(m.selected, m.savedWords)
+}
+
+func _modified(m model) string {
+	return wordsList(m.selected, m.modifiedWords)
 }
 
 
@@ -47,6 +46,8 @@ func page(m model) string {
 		s = _random(m)
 	case SAVED:
 		s = _saved(m)
+	case MODIFIED:
+		s = _modified(m)
 	}
 
 	return lipgloss.NewStyle().PaddingLeft(1).Render(s)

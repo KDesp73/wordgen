@@ -3,6 +3,7 @@ package tui
 import "github.com/charmbracelet/bubbles/key"
 
 type keyMap struct {
+	Delete key.Binding
 	NextPage key.Binding
 	PrevPage key.Binding
 	Save key.Binding
@@ -20,12 +21,16 @@ func (k keyMap) ShortHelp() []key.Binding {
 
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Enter, k.Up, k.Down, k.Save, k.New, k.NextPage, k.PrevPage},
+		{k.Enter, k.Up, k.Down, k.Save, k.New, k.NextPage, k.PrevPage, k.Delete},
 		{k.Help, k.Quit},
 	}
 }
 
 var keys = keyMap{
+	Delete: key.NewBinding(
+		key.WithKeys("d"),
+		key.WithHelp("d", "delete saved word"),
+	),
 	NextPage: key.NewBinding(
 		key.WithKeys("tab"),
 		key.WithHelp("tab", "next page"),

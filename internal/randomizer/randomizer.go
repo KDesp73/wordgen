@@ -53,7 +53,7 @@ func RandWord(numLetters int) string {
 	return s.String()
 }
 
-func FetchWords(size int) []string {
+func GetWords(size int) []string {
 	words := []string{}
 
 	for i := 0; i< size; i++ {
@@ -70,4 +70,20 @@ func ModifyWord(word string) string {
 	} else {
 		return word[:index] + randCon() + word[index+1:]
 	}
+}
+
+func GetModifiedWords(word string, count int) []string {
+	uniqueWords := make(map[string]struct{})
+
+	for len(uniqueWords) < count {
+		modifiedWord := ModifyWord(word)
+		uniqueWords[modifiedWord] = struct{}{}
+	}
+
+	result := make([]string, 0, len(uniqueWords))
+	for modifiedWord := range uniqueWords {
+		result = append(result, modifiedWord)
+	}
+
+	return result
 }
