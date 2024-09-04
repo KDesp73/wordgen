@@ -12,30 +12,45 @@ const (
 	MODIFIED = 2
 )
 
-func wordsList(selected int, list []string) string {
+func wordsList(m model) string {
 	var b strings.Builder
 
-	for i, word := range list {
-		if i == selected {
-			b.WriteString(selectedItemStyle(word) + "\n")
+	var currentWords []string
+	switch m.page {
+	case SAVED: 
+		currentWords = m.savedWords
+	case RANDOM:
+		currentWords = m.words
+	case MODIFIED:
+		currentWords = m.modifiedWords
+	}
+
+	for i, word := range currentWords {
+		if i == m.selected {
+			b.WriteString(selectedItemStyle(word))
 		} else {
-			b.WriteString(" " + word + "\n")
+			b.WriteString(" " + word + " ")
 		}
+
+		if m.page != SAVED && contains(m.savedWords, word) {
+			b.WriteString(lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF00")).Render(" ✔"))
+		}
+		b.WriteString("\n")
 	}
 	
 	return b.String()
 }
 
 func _random(m model) string {
-	return wordsList(m.selected, m.words)
+	return wordsList(m)
 }
 
 func _saved(m model) string {
-	return wordsList(m.selected, m.savedWords)
+	return wordsList(m)
 }
 
 func _modified(m model) string {
-	return wordsList(m.selected, m.modifiedWords)
+	return wordsList(m)
 }
 
 
