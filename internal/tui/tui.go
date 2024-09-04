@@ -28,7 +28,7 @@ type model struct {
 }
 
 func NewModel() model {
-	const saveFile = "save.json"
+	const saveFile = "words.json"
 	words, err := loadFromFile(saveFile)
 
 	if err != nil {
