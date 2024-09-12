@@ -41,15 +41,15 @@ var keys = keyMap{
 	),
 	New: key.NewBinding(
 		key.WithKeys("r"),
-		key.WithHelp("r", "Refresh random words"),
+		key.WithHelp("r", "refresh random words"),
 	),
 	Save: key.NewBinding(
 		key.WithKeys("s"),
-		key.WithHelp("s", "Save a word"),
+		key.WithHelp("s", "save a word"),
 	),
 	Enter: key.NewBinding(
 		key.WithKeys("enter"),
-		key.WithHelp("enter", "Proceed"),
+		key.WithHelp("enter", "proceed"),
 	),
 	Up: key.NewBinding(
 		key.WithKeys("up"),
